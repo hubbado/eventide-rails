@@ -1,5 +1,7 @@
 module Eventide
   module Rails
+    autoload :Message, 'eventide/rails/message'
+
     def self.root_path
       File.expand_path(__dir__)
     end
@@ -11,5 +13,4 @@ require 'eventide/rails/configuration'
 
 if defined?(::Rails)
   require 'eventide/rails/railtie'
-  require 'eventide/rails/message'
 end
