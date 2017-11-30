@@ -11,5 +11,5 @@ require 'eventide/rails/configuration'
 
 if defined?(::Rails)
   require 'eventide/rails/railtie'
-  require 'eventide/rails/event'
+  require 'eventide/rails/message'
 end
