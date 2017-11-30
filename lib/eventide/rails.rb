@@ -8,4 +8,8 @@ end
 
 require 'eventide/rails/version'
 require 'eventide/rails/configuration'
-require 'eventide/rails/railtie' if defined?(::Rails)
+
+if defined?(::Rails)
+  require 'eventide/rails/railtie'
+  require 'eventide/rails/event'
+end

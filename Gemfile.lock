@@ -3,6 +3,7 @@ PATH
   specs:
     eventide-rails (0.1.0)
       activerecord (~> 5.1)
+      eventide-postgres
       pg
 
 GEM
@@ -21,10 +22,102 @@ GEM
       tzinfo (~> 1.1)
     arel (8.0.0)
     concurrent-ruby (1.0.5)
+    confstruct (1.0.2)
+      hashie (~> 3.3)
     diff-lcs (1.3)
+    eventide-postgres (0.2.0.2)
+      evt-consumer-postgres
+      evt-entity_snapshot-postgres
+      evt-entity_store
+    evt-async_invocation (0.1.0.4)
+    evt-attribute (0.1.3.5)
+    evt-casing (0.3.0.3)
+    evt-clock (0.4.0.7)
+      naught
+      tzinfo
+    evt-configure (0.1.2.5)
+    evt-consumer (0.7.0.0)
+      evt-configure
+      evt-cycle
+      evt-messaging
+      ntl-actor
+    evt-consumer-postgres (0.2.2.0)
+      evt-consumer
+      evt-messaging-postgres
+    evt-cycle (0.3.0.3)
+      evt-clock
+      evt-initializer
+      evt-log
+      evt-telemetry
+    evt-dependency (0.1.0.4)
+      evt-subst_attr
+    evt-entity_cache (0.15.0.0)
+      evt-configure
+      evt-message_store
+      evt-settings
+      evt-telemetry
+    evt-entity_projection (0.3.0.3)
+      evt-messaging
+    evt-entity_snapshot-postgres (0.2.2.0)
+      evt-entity_store
+      evt-messaging-postgres
+    evt-entity_store (0.5.0.0)
+      evt-entity_cache
+      evt-entity_projection
+    evt-identifier-uuid (0.1.1.3)
+      naught
+    evt-initializer (0.1.0.2)
+      evt-attribute
+    evt-log (0.4.3.5)
+      evt-clock
+      evt-dependency
+      evt-initializer
+      evt-telemetry
+      terminal_colors
+    evt-message_store (0.2.2.0)
+      evt-async_invocation
+      evt-casing
+      evt-identifier-uuid
+      evt-initializer
+      evt-schema
+      evt-transform
+      evt-virtual
+    evt-message_store-postgres (0.4.2.0)
+      evt-log
+      evt-message_store
+      evt-settings
+      pg
+    evt-messaging (0.24.0.0)
+      evt-message_store
+    evt-messaging-postgres (0.7.0.3)
+      evt-message_store-postgres
+      evt-messaging
+    evt-schema (0.6.1.1)
+      evt-attribute
+      evt-set_attributes
+      evt-validate
+      evt-virtual
+    evt-set_attributes (0.3.0.2)
+    evt-settings (0.2.0.5)
+      confstruct
+      evt-casing
+      evt-log
+    evt-subst_attr (0.1.0.2)
+      evt-attribute
+      naught
+    evt-telemetry (0.3.1.0)
+      evt-clock
+      evt-dependency
+    evt-transform (0.1.2.0)
+      evt-log
+    evt-validate (0.3.1.5)
+    evt-virtual (0.1.0.2)
+    hashie (3.5.6)
     i18n (0.9.1)
       concurrent-ruby (~> 1.0)
     minitest (5.10.3)
+    naught (1.1.0)
+    ntl-actor (1.2.3)
     pg (0.21.0)
     rake (10.5.0)
     rspec (3.5.0)
@@ -40,6 +133,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
+    terminal_colors (0.0.0)
     thread_safe (0.3.6)
     tzinfo (1.2.4)
       thread_safe (~> 0.1)
