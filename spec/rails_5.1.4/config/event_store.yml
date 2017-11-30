@@ -1,0 +1,12 @@
+default: &default
+  username: postgres
+  password: MyPostgressPassword
+  host: 0.0.0.0
+
+development:
+  <<: *default
+  database: eventide_rails_dev
+
+test:
+  <<: *default
+  database: eventide_rails_test
