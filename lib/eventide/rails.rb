@@ -10,7 +10,7 @@ end
 
 require 'eventide/rails/version'
 require 'eventide/rails/configuration'
+require 'eventide/rails/setting_patch'
+require 'eventide/rails/database_tasks'
 
-if defined?(::Rails)
-  require 'eventide/rails/railtie'
-end
+require 'eventide/rails/railtie' if defined?(::Rails)

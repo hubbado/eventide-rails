@@ -11,6 +11,7 @@ gem 'puma', '~> 3.7'
 gem 'jbuilder', '~> 2.5'
 
 gem 'eventide-rails', path: '../..'
+gem 'eventide-postgres'
 
 group :development, :test do
   gem 'rspec-rails'
