@@ -6,6 +6,8 @@
 /pkg/
 /spec/reports/
 /tmp/
+.idea
+spec/*/config/event_store.yml
 
 # rspec failure tracking
 .rspec_status
