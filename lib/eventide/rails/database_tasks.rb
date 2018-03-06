@@ -7,6 +7,11 @@ module Eventide::Rails
       def create
         wrap_ar_config do
           ARTasks.create_current
+        end
+      end
+
+      def init
+        wrap_ar_config do
           ARTasks.send(:each_current_configuration, ARTasks.env) do |config|
             migrate config
           end
@@ -31,6 +36,10 @@ module Eventide::Rails
 
       def migrate(config)
         connection = ActiveRecord::Base.establish_connection(config).connection
+        if migrated?(connection)
+          puts "Eventide for '#{config['database']}' already initialized"
+          return
+        end
         execute_script script_path('extensions.sql'), connection
         execute_directory('functions', connection)
         execute_directory('table', connection)
@@ -43,6 +52,15 @@ module Eventide::Rails
 
       def execute_directory(dir, connection)
         Dir[script_path dir, '*.sql'].each { |path| execute_script path, connection }
+      end
+
+      def migrated?(connection)
+        result = connection.execute <<-SQL
+          SELECT 1
+            FROM information_schema.tables
+            WHERE table_name = 'messages'
+        SQL
+        result.to_a.any?
       end
 
       def script_root

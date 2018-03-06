@@ -19,6 +19,5 @@ describe 'Database connection' do
 
     entity = store.fetch(register_uuid)
     expect(entity.items).to include item
-
   end
 end
