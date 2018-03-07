@@ -2,9 +2,15 @@ require 'yaml'
 require 'erb'
 require 'ostruct'
 require 'byebug'
+require 'bundler'
 
 class Setup
-  def self.setup_all
+  def self.run!
+    unless configured?
+      puts 'test/config.yml file not found!'
+      return
+    end
+
     RAILS_VERSIONS.each do |version|
       %i[separate same].each do |type|
         setup(version, type)
@@ -18,6 +24,10 @@ class Setup
 
   def self.configuration
     @config ||= YAML.load_file(File.join(ROOT, 'config.yml'))
+  end
+
+  def self.configured?
+    File.file?(File.join(ROOT, 'config.yml'))
   end
 
   def initialize(version, type)
@@ -36,6 +46,8 @@ class Setup
     install_railtie
     create_rails_app
     copy_templates
+    install_gems
+    copy_examples
   end
 
   private
@@ -69,8 +81,10 @@ class Setup
   end
 
   def create_rails_app
+    Dir.mkdir(VERSIONS_FOLDER) unless File.directory?(VERSIONS_FOLDER)
     Dir.chdir(VERSIONS_FOLDER)
     `rails _#{version}_ new #{directory_name} #{options_for_rails_create} &> /dev/null`
+    Dir.chdir(directory)
   end
 
   def options_for_rails_create
@@ -101,5 +115,16 @@ class Setup
 
   def config
     self.class.configuration.merge(name: directory_name.tr('.', '_'))
+  end
+
+  def install_gems
+    `echo "gem 'rspec-rails', group: :test" >> #{File.join(directory, 'Gemfile')}`
+    `echo "gem 'eventide-rails', path: '../../..'" >> #{File.join(directory, 'Gemfile')}`
+    `echo "gem '', path: '../../..'" >> #{File.join(directory, 'Gemfile')}`
+    Bundler.with_clean_env { `bundle install` }
+  end
+
+  def copy_examples
+    `cp -r #{File.join(ROOT, 'examples', type.to_s)} #{File.join(directory, 'spec')}`
   end
 end

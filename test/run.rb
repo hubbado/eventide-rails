@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 
-RAILS_VERSIONS = %w[5.1.4 5.1.3].freeze
+RAILS_VERSIONS = %w[5.1.4].freeze
 
 ROOT = File.realpath(File.join(__FILE__, '..')).freeze
 VERSIONS_FOLDER = File.join(ROOT, 'versions').freeze
 
 require_relative './run/setup'
 
-Setup.setup_all
+Setup.run!
 

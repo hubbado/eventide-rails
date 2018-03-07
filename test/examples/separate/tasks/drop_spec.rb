@@ -1,40 +1,43 @@
 require 'rails_helper'
 
-describe 'rake es:create' do
-  let(:task) { Rake::Task['es:drop'] }
+describe 'rake es:drop' do
   let(:config) { Eventide::Rails::Configuration.load.symbolize_keys }
 
   def execute!
-    task.execute
+    `RAILS_ENV=#{environment} rake db:drop`
   end
 
-  before do
-    allow(ActiveRecord::Tasks::DatabaseTasks).to receive(:drop)
-    allow(ActiveRecord::Tasks::DatabaseTasks).to receive(:env).and_return environment
+  after(:each) do
+    `RAILS_ENV=#{environment} rake db:create`
   end
 
   context 'when run in test environment' do
     let(:environment) { 'test' }
 
     it 'drops test es database' do
-      execute!
-
-      expect(ActiveRecord::Tasks::DatabaseTasks)
-        .to have_received(:drop).once.with config[:test]
+      expect { execute! }
+        .to change { database_exists?[:test] }.from(true).to(false)
     end
   end
 
-  context 'when run in development' do
-    let(:environment) { 'development' }
+  # context 'when run in development' do
+  #   let(:environment) { 'development' }
+  #
+  #   it 'creates development es database only' do
+  #     execute!
+  #
+  #     expect(ActiveRecord::Tasks::DatabaseTasks)
+  #       .to have_received(:drop).once.with config[:development]
+  #
+  #     expect(ActiveRecord::Tasks::DatabaseTasks)
+  #       .to have_received(:drop).once.with config[:test]
+  #   end
+  # end
 
-    it 'creates development es database only' do
-      execute!
-
-      expect(ActiveRecord::Tasks::DatabaseTasks)
-        .to have_received(:drop).once.with config[:development]
-
-      expect(ActiveRecord::Tasks::DatabaseTasks)
-        .to have_received(:drop).once.with config[:test]
-    end
+  def database_exists?(env)
+    ActiveRecord::Base.establish_connection(config[env.to_sym])
+    true
+  rescue ActiveRecord::NoDatabaseError
+    false
   end
 end
