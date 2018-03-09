@@ -3,9 +3,9 @@ require 'yaml'
 module CliGroup
   ROOT = File.expand_path File.join(__FILE__, '..', '..', '..')
 
-  def system(command, **opts)
+  def system(env = {}, command, **opts)
     opts[:out] = opts[:err] = File::NULL
-    super(command, **opts)
+    super(env, command, **opts)
   end
 
   def database_exists?(type, env)
@@ -50,12 +50,12 @@ module CliGroup
 
   def pg_system(*cmds, db:)
     cmd = cmds.shift
-    cmd = "PG_PASSWORD=#{db['password']} #{cmd}" if db['password']
     cmd += " -h #{db['host']}" if db['host']
     cmd += " -U #{db['username']}" if db['username']
 
+    env = db['password'] ? { 'PGPASSWORD' => db['password']} : {};
     cmd = [cmd, *cmds].join(' | ')
-    system cmd
+    system env, cmd
   end
 
   RSpec.configure do |rspec|
