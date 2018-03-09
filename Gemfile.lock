@@ -9,13 +9,13 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (5.1.4)
-      activesupport (= 5.1.4)
-    activerecord (5.1.4)
-      activemodel (= 5.1.4)
-      activesupport (= 5.1.4)
+    activemodel (5.1.5)
+      activesupport (= 5.1.5)
+    activerecord (5.1.5)
+      activemodel (= 5.1.5)
+      activesupport (= 5.1.5)
       arel (~> 8.0)
-    activesupport (5.1.4)
+    activesupport (5.1.5)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
       minitest (~> 5.1)
@@ -82,7 +82,7 @@ GEM
       evt-schema
       evt-transform
       evt-virtual
-    evt-message_store-postgres (0.4.2.0)
+    evt-message_store-postgres (0.6.0.0)
       evt-log
       evt-message_store
       evt-settings
@@ -112,13 +112,13 @@ GEM
       evt-log
     evt-validate (0.3.1.5)
     evt-virtual (0.1.0.2)
-    hashie (3.5.6)
-    i18n (0.9.1)
+    hashie (3.5.7)
+    i18n (0.9.5)
       concurrent-ruby (~> 1.0)
-    minitest (5.10.3)
+    minitest (5.11.3)
     naught (1.1.0)
     ntl-actor (1.2.3)
-    pg (0.21.0)
+    pg (1.0.0)
     rake (10.5.0)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
@@ -135,7 +135,7 @@ GEM
     rspec-support (3.5.0)
     terminal_colors (0.0.0)
     thread_safe (0.3.6)
-    tzinfo (1.2.4)
+    tzinfo (1.2.5)
       thread_safe (~> 0.1)
 
 PLATFORMS
