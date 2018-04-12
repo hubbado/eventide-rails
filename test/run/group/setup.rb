@@ -105,7 +105,8 @@ class Group::Setup
 
   def copy_examples
     ['common', type.to_s].each do |dir|
-      `cp -r #{File.join(ROOT, 'examples', dir)} #{File.join(directory, 'spec')}`
+      full_dir = File.join(ROOT, 'examples', dir, '.')
+      FileUtils.cp_r(full_dir, File.join(directory, 'spec'))
     end
   end
 end
