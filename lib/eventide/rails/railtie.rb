@@ -10,5 +10,12 @@ module Eventide::Rails
         ::Rake::Task['es:drop'].invoke
       end
     end
+
+    initializer 'eventide:rails:schema' do
+      if Configuration.homo?
+        ActiveRecord::SchemaDumper.ignore_tables << 'messages'
+      end
+    end
   end
 end
+

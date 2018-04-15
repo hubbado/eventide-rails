@@ -17,12 +17,12 @@ module Eventide::Rails
       end
 
       def current
-        load[Rails.env].map { |k, v| [k.to_sym, v] }.to_h
+        load[Rails.env].symbolize_keys
       end
 
       def setup_type
         return @setup_type if @setup_type
-        ar_config = ActiveRecord::Base.connection_config
+        ar_config = ActiveRecord::Base.configurations[Rails.env].symbolize_keys
         es_config = current
 
         if db_config(ar_config) == db_config(es_config)

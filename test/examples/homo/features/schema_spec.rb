@@ -1,18 +1,11 @@
 require 'spec_helper'
 
-describe 'schema.rb behaviour', type: :cli do
+describe 'schema.rb', type: :cli do
 
   before { system 'rake db:create db:migrate' }
 
-  it 'is NO-OP' do
-    expect { system 'rake es:create' }
-      .not_to(change {
-        [
-          database_exists?(:ar, :development),
-          database_exists?(:ar, :test),
-          database_exists?(:es, :development),
-          database_exists?(:es, :development)
-        ]
-      })
+  it 'does not include eventide messages table' do
+    schema_file = File.read('db/schema.rb')
+    expect(schema_file).not_to include('create_table "messages"')
   end
 end
