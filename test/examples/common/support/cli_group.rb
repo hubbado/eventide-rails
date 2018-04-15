@@ -1,4 +1,6 @@
 require 'yaml'
+require 'active_record'
+require 'eventide/rails'
 
 module CliGroup
   ROOT = File.expand_path File.join(__FILE__, '..', '..', '..')
@@ -35,18 +37,20 @@ module CliGroup
   def ar_config(env)
     @ar_config ||= begin
       config_file = File.join(ROOT, 'config/database.yml')
-      YAML.load_file(config_file)
+      parse_db_configs YAML.load_file(config_file)
     end
     @ar_config[env.to_s]
   end
 
   def es_config(env)
-    @es_config ||= begin
-      config_file = File.join(ROOT, 'config/event_store.yml')
-      YAML.load_file(config_file)
-    end
+    @es_config ||= Eventide::Rails::Configuration.load
     @es_config[env.to_s]
   end
+
+  def parse_db_configs(configs)
+    ActiveRecord::ConnectionHandling::MergeAndResolveDefaultUrlConfig.new(configs).resolve
+  end
+
 
   def db_config(type, env)
     raise "Unknown type: #{type}" unless %w[ar es].include? type.to_s

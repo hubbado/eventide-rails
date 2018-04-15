@@ -13,7 +13,8 @@ module Eventide::Rails
     class << self
       def load
         yaml = ERB.new(File.read 'config/event_store.yml').result
-        YAML.load(yaml).transform_values { |conf| conf.merge DEFAULTS }
+        parsed = YAML.load(yaml).transform_values { |conf| conf.merge DEFAULTS }
+        ActiveRecord::ConnectionHandling::MergeAndResolveDefaultUrlConfig.new(parsed).resolve
       end
 
       def current
