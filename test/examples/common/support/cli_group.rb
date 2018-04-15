@@ -27,7 +27,7 @@ module CliGroup
 
   def es_database_ready?(env)
     db = es_config(env)
-    pg_system %(psql #{db['database']} -c "select * from messages"), db: db
+    pg_system %(psql #{db['database']} -c "SELECT 'write_message'::regproc, 'category'::regproc"), db: db
   end
 
   private

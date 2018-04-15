@@ -6,8 +6,13 @@ module Eventide::Rails
       ::Rake::Task['db:create'].enhance do
         ::Rake::Task['es:create'].invoke
       end
+
       ::Rake::Task['db:drop'].enhance do
         ::Rake::Task['es:drop'].invoke
+      end
+
+      ::Rake::Task['db:schema:load'].enhance do
+        ::Rake::Task['es:init'].invoke
       end
     end
 
