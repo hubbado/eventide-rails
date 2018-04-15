@@ -4,18 +4,18 @@ tasks = Eventide::Rails::DatabaseTasks
 
 namespace :es do
   desc 'creates event store database'
-  task :create do
+  task create: :environment do
     tasks.create
     tasks.init
   end
 
   desc 'creates all the internal objects required for eventide storage'
-  task :init do
+  task init: :environment do
     tasks.init
   end
 
   desc 'drops event store database'
-  task :drop do
+  task drop: :environment do
     tasks.drop
   end
 end

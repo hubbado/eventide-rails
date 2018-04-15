@@ -5,6 +5,7 @@ module Eventide::Rails
       ARTasks = ActiveRecord::Tasks::DatabaseTasks
 
       def create
+        return if Configuration.homo?
         wrap_ar_config do
           ARTasks.create_current
         end
@@ -19,6 +20,7 @@ module Eventide::Rails
       end
 
       def drop
+        return if Configuration.homo?
         wrap_ar_config do
           ActiveRecord::Tasks::DatabaseTasks.drop_current
         end
@@ -35,7 +37,12 @@ module Eventide::Rails
       end
 
       def migrate(config)
-        connection = ActiveRecord::Base.establish_connection(config).connection
+        begin
+          connection = ActiveRecord::Base.establish_connection(config).connection
+        rescue ActiveRecord::NoDatabaseError
+          $stderr.puts "Eventide cannot be initialized for #{config['database']}: database not created"
+          return
+        end
         if migrated?(connection)
           puts "Eventide for '#{config['database']}' already initialized"
           return
@@ -55,12 +62,10 @@ module Eventide::Rails
       end
 
       def migrated?(connection)
-        result = connection.execute <<-SQL
-          SELECT 1
-            FROM information_schema.tables
-            WHERE table_name = 'messages'
-        SQL
-        result.to_a.any?
+        connection.execute "SELECT 'write_message'::regproc, 'category'::regproc"
+        true
+      rescue ActiveRecord::StatementInvalid
+        false
       end
 
       def script_root

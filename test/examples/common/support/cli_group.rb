@@ -8,6 +8,11 @@ module CliGroup
     super(env, command, **opts)
   end
 
+  def assert_command(env = {}, command, result)
+    failure_message = "Expected command #{command} to #{result ? 'run successfully' : 'fail'}, but it didn't."
+    expect(system(env, command)).to eq(result, failure_message)
+  end
+
   def database_exists?(type, env)
     db = db_config(type, env)
 
@@ -53,7 +58,7 @@ module CliGroup
     cmd += " -h #{db['host']}" if db['host']
     cmd += " -U #{db['username']}" if db['username']
 
-    env = db['password'] ? { 'PGPASSWORD' => db['password']} : {};
+    env = db['password'] ? { 'PGPASSWORD' => db['password'] } : {}
     cmd = [cmd, *cmds].join(' | ')
     system env, cmd
   end
