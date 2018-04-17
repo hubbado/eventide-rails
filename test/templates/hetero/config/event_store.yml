@@ -1,0 +1,12 @@
+default: &default
+  username: <%= username %>
+  <% if password %>password: <%= password %><% end %>
+  host: <%= host %>
+
+development:
+  <<: *default
+  database: <%= name %>_dev
+
+test:
+  <<: *default
+  database: <%= name %>_test

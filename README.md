@@ -1,38 +1,68 @@
 # Eventide::Rails
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/eventide/rails`. To experiment with that code, run `bin/console` for an interactive prompt.
+The purpose of this gem is to allow flawless integration of eventide stack (with postgres event store) with your rails application.
 
-TODO: Delete this and the text above, and describe your gem
-
+NOTE: This is not part of an official eventide stack and is not maintained, opinionated or advised by eventide team. 
+ 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'eventide-rails'
+gem 'eventide-rails', git: 'https://github.com/hubbado/eventide-rails'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
+## Getting started
 
-    $ gem install eventide-rails
+Create file _config/event_store.yml_, which will store all the configuration for your event database.
+Unlike pure eventide configuration, this file should have the same format as already familiar _config/database.yml_ file, 
+including different environment settings. All the active record options are supported.
 
-## Usage
+Note: `adapter` option is not required, `pg` is used by default.
 
-TODO: Write usage instructions here
+## Setup types
 
-## Development
+`eventide-rails` will automatically detect if you are using same database for eventide and active record.
+The gem behaviour, especially rake tasks, will be modified depending on that factor. In further documentation, those setup will be refered as
+homo- and hetero-db.
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+## Features
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+### Rake tasks
+
+#### New tasks:
+  - `es:create` - creates and initializes event store database. Initialize only for homo-db setup.
+  - `es:init` - initializes event store.
+  - `es:drop` - drops event store database. NO-OP for homo-db setup.
+  
+#### Enhanced tasks:
+  - `db:create` - calls `es:create` after run
+  - `db:drop` - calls `es:drop` after run.
+  - `db:schema:load` - calls `es:initialize` for a homo-db setup.
+  
+### Schema
+
+`eventide` message store needs `messages` table in the database. If you selected homo-db setup, this table will not be
+present in your _schema.rb_ file.
+     
 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/eventide-rails. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+
+### Testing
+
+To run full spec:
+1. `$ cp test/config.yml.example test/config.yml`
+1. Modify _test/config.yml_ file with your basic database connection information.  
+1. Run `rake test`.
+
+It will take a while as it will install all the supported rails version on 
+your machine and create two dummy applications per earch rails verison - one for homo- and hetero-db setup.  
 
 ## License
 
