@@ -18,4 +18,14 @@ namespace :es do
   task drop: :environment do
     tasks.drop
   end
+
+  desc 'checks the state of event store'
+  task check: :environment do
+    tasks.check
+  end
+
+  desc 'reinstalls event store functions and views'
+  task update: :environment do
+    tasks.update
+  end
 end
