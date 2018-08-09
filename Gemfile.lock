@@ -3,32 +3,32 @@ PATH
   specs:
     eventide-rails (0.1.0)
       activerecord (~> 5.1)
-      eventide-postgres
+      eventide-postgres (~> 0.1.1)
       pg
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (5.1.6)
-      activesupport (= 5.1.6)
-    activerecord (5.1.6)
-      activemodel (= 5.1.6)
-      activesupport (= 5.1.6)
-      arel (~> 8.0)
-    activesupport (5.1.6)
+    activemodel (5.2.1)
+      activesupport (= 5.2.1)
+    activerecord (5.2.1)
+      activemodel (= 5.2.1)
+      activesupport (= 5.2.1)
+      arel (>= 9.0)
+    activesupport (5.2.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    arel (8.0.0)
+    arel (9.0.0)
     concurrent-ruby (1.0.5)
     confstruct (1.0.2)
       hashie (~> 3.3)
     diff-lcs (1.3)
-    eventide-postgres (0.2.0.2)
-      evt-consumer-postgres
+    eventide-postgres (0.1.1.0)
       evt-entity_snapshot-postgres
       evt-entity_store
+      evt-messaging-postgres
     evt-async_invocation (0.1.0.4)
     evt-attribute (0.2.0.0)
     evt-casing (0.3.0.3)
@@ -36,45 +36,32 @@ GEM
       naught
       tzinfo
     evt-configure (0.1.2.5)
-    evt-consumer (0.7.0.1)
-      evt-configure
-      evt-cycle
-      evt-messaging
-      ntl-actor
-    evt-consumer-postgres (0.2.2.0)
-      evt-consumer
-      evt-messaging-postgres
-    evt-cycle (0.3.0.3)
-      evt-clock
-      evt-initializer
-      evt-log
-      evt-telemetry
-    evt-dependency (0.1.0.4)
+    evt-dependency (0.1.1.0)
       evt-subst_attr
-    evt-entity_cache (0.15.0.0)
+    evt-entity_cache (0.16.0.2)
       evt-configure
       evt-message_store
       evt-settings
       evt-telemetry
     evt-entity_projection (0.3.0.3)
       evt-messaging
-    evt-entity_snapshot-postgres (0.2.2.0)
+    evt-entity_snapshot-postgres (0.2.2.3)
       evt-entity_store
       evt-messaging-postgres
-    evt-entity_store (0.5.0.0)
+    evt-entity_store (0.5.1.1)
       evt-entity_cache
       evt-entity_projection
-    evt-identifier-uuid (0.1.1.3)
+    evt-identifier-uuid (0.2.0.0)
       naught
     evt-initializer (0.2.0.0)
       evt-attribute
-    evt-log (0.4.3.5)
+    evt-log (0.5.2.0)
       evt-clock
       evt-dependency
       evt-initializer
       evt-telemetry
       terminal_colors
-    evt-message_store (0.3.0.1)
+    evt-message_store (0.7.0.2)
       evt-async_invocation
       evt-casing
       evt-identifier-uuid
@@ -82,61 +69,63 @@ GEM
       evt-schema
       evt-transform
       evt-virtual
-    evt-message_store-postgres (0.6.0.1)
+    evt-message_store-postgres (0.10.2.2)
       evt-log
       evt-message_store
+      evt-message_store-postgres-database
       evt-settings
       pg
-    evt-messaging (0.25.0.1)
+    evt-message_store-postgres-database (0.7.1.1)
+    evt-messaging (0.29.0.4)
       evt-message_store
     evt-messaging-postgres (0.7.0.3)
       evt-message_store-postgres
       evt-messaging
-    evt-reflect (0.1.1.0)
-    evt-schema (0.7.0.0)
+    evt-reflect (0.2.0.0)
+    evt-schema (0.7.1.1)
       evt-attribute
       evt-set_attributes
       evt-validate
       evt-virtual
-    evt-set_attributes (0.3.0.2)
-    evt-settings (0.2.0.5)
+    evt-set_attributes (0.5.0.0)
+    evt-settings (0.2.2.0)
       confstruct
       evt-casing
       evt-log
-    evt-subst_attr (0.1.0.2)
+    evt-subst_attr (0.2.0.1)
       evt-attribute
+      evt-reflect
       naught
-    evt-telemetry (0.3.1.0)
+    evt-telemetry (0.3.2.1)
       evt-clock
       evt-dependency
-    evt-transform (0.2.0.0)
+    evt-transform (0.2.1.0)
       evt-log
       evt-reflect
-    evt-validate (0.4.0.0)
+    evt-validate (0.4.0.1)
       evt-reflect
-    evt-virtual (0.1.0.2)
+    evt-virtual (0.1.1.1)
     hashie (3.5.7)
-    i18n (1.0.0)
+    i18n (1.1.0)
       concurrent-ruby (~> 1.0)
     minitest (5.11.3)
     naught (1.1.0)
-    ntl-actor (1.2.6)
     pg (1.0.0)
     rake (10.5.0)
-    rspec (3.5.0)
-      rspec-core (~> 3.5.0)
-      rspec-expectations (~> 3.5.0)
-      rspec-mocks (~> 3.5.0)
-    rspec-core (3.5.4)
-      rspec-support (~> 3.5.0)
-    rspec-expectations (3.5.0)
+    rspec (3.8.0)
+      rspec-core (~> 3.8.0)
+      rspec-expectations (~> 3.8.0)
+      rspec-mocks (~> 3.8.0)
+    rspec-core (3.8.0)
+      rspec-support (~> 3.8.0)
+    rspec-expectations (3.8.1)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.5.0)
-    rspec-mocks (3.5.0)
+      rspec-support (~> 3.8.0)
+    rspec-mocks (3.8.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.5.0)
-    rspec-support (3.5.0)
-    terminal_colors (0.0.0)
+      rspec-support (~> 3.8.0)
+    rspec-support (3.8.0)
+    terminal_colors (1.0.0)
     thread_safe (0.3.6)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)

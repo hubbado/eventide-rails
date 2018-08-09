@@ -48,9 +48,21 @@ module Eventide::Rails
           return
         end
         execute_script script_path('extensions.sql'), connection
-        execute_directory('functions', connection)
         execute_directory('table', connection)
+        execute_directory('types', connection)
+        %w[
+          hash-64
+          category
+          stream-version
+          write-message
+          get-stream-messages
+          get-category-messages
+          get-last-message
+        ].each do |fn|
+          execute_script script_path("functions/#{fn}.sql"), connection
+        end
         execute_directory('indexes', connection)
+        execute_directory('views', connection)
       end
 
       def execute_script(path, connection)
@@ -70,7 +82,7 @@ module Eventide::Rails
 
       def script_root
         @script_root ||= File.join(
-          Gem::Specification.find_by_name('evt-message_store-postgres').gem_dir,
+          Gem::Specification.find_by_name('evt-message_store-postgres-database').gem_dir,
           'database'
         )
       end
