@@ -30,6 +30,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activerecord', '~> 5.1'
   spec.add_dependency 'pg'
   spec.add_dependency 'eventide-postgres'
+  spec.add_dependency 'evt-message_store-postgres-database', '0.7.1.1'
+  spec.add_dependency 'evt-messaging-postgres', '0.7.0.3'
 
   spec.add_development_dependency 'bundler', '~> 1.16'
   spec.add_development_dependency 'rake', '~> 10.0'

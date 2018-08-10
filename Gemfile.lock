@@ -1,9 +1,11 @@
 PATH
   remote: .
   specs:
-    eventide-rails (0.1.0)
+    eventide-rails (0.2.0)
       activerecord (~> 5.1)
       eventide-postgres
+      evt-message_store-postgres-database (= 0.7.1.1)
+      evt-messaging-postgres (= 0.7.0.3)
       pg
 
 GEM
