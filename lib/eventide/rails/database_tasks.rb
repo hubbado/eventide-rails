@@ -80,7 +80,7 @@ module Eventide::Rails
         execute_script script_path('extensions.sql'), connection
         install_functions(connection)
         execute_directory('table', connection)
-        execute_directory('indexes', connection)
+        execute_directory('indexes', connection, split_commands: true)
         execute_directory('views', connection)
       end
 
@@ -91,15 +91,33 @@ module Eventide::Rails
         end
 
         install_functions(connection)
+        execute_directory('indexes', connection, split_commands: true)
         execute_directory('views', connection)
+
+        update_position_types(connection)
       end
 
-      def execute_script(path, connection)
-        connection.execute File.read(path)
+      def update_position_types(connection)
+        connection.execute <<~SQL
+          UPDATE messages
+            SET type = 'Recorded'
+            WHERE type = 'Updated'
+              AND (stream_name LIKE '%+position'
+                OR stream_name LIKE '%:position'
+                OR stream_name LIKE '%:position-%')
+        SQL
       end
 
-      def execute_directory(dir, connection)
-        Dir[script_path dir, '*.sql'].each { |path| execute_script path, connection }
+      def execute_script(path, connection, split_commands: false)
+        sql = File.read(path)
+        commands = split_commands ? sql.split(/;$/) : [sql]
+        commands.each do |cmd|
+          connection.execute cmd
+        end
+      end
+
+      def execute_directory(dir, connection, split_commands: false)
+        Dir[script_path dir, '*.sql'].each { |path| execute_script path, connection, split_commands: split_commands }
       end
 
       def check_status(config)
